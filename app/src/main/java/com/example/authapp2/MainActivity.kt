@@ -3,45 +3,76 @@ package com.example.authapp2
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.authapp2.data.AuthRepository
 import com.example.authapp2.ui.theme.AuthApp2Theme
+import com.example.authapp2.ui.view.ForgotPasswordScreen
+import com.example.authapp2.ui.view.HomeScreen
+import com.example.authapp2.ui.view.LoginScreen
+import com.example.authapp2.ui.view.RegisterScreen
+import com.example.authapp2.ui.viewmodel.AuthViewModel
+import com.example.authapp2.ui.viewmodel.AuthViewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             AuthApp2Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    // Instancia o repositório e a factory do ViewModel
+                    val authRepository = AuthRepository()
+                    val viewModelFactory = AuthViewModelFactory(authRepository)
+                    val authViewModel: AuthViewModel = viewModel(factory = viewModelFactory)
+
+                    AppNavigator(authViewModel)
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+// Define as rotas de navegação
+object AppRoutes {
+    const val LOGIN_SCREEN = "login"
+    const val REGISTER_SCREEN = "register"
+    const val FORGOT_PASSWORD_SCREEN = "forgot_password"
+    const val HOME_SCREEN = "home"
 }
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    AuthApp2Theme {
-        Greeting("Android")
+fun AppNavigator(viewModel: AuthViewModel) {
+    val navController = rememberNavController()
+
+    // Verifica se o usuário já está logado para definir a tela inicial
+    val startDestination = if (viewModel.isUserLogged()) {
+        AppRoutes.HOME_SCREEN
+    } else {
+        AppRoutes.LOGIN_SCREEN
+    }
+
+    NavHost(navController = navController, startDestination = startDestination) {
+        composable(AppRoutes.LOGIN_SCREEN) {
+            LoginScreen(navController = navController, viewModel = viewModel)
+        }
+        composable(AppRoutes.REGISTER_SCREEN) {
+            RegisterScreen(navController = navController, viewModel = viewModel)
+        }
+        composable(AppRoutes.FORGOT_PASSWORD_SCREEN) {
+            ForgotPasswordScreen(navController = navController, viewModel = viewModel)
+        }
+        composable(AppRoutes.HOME_SCREEN) {
+            HomeScreen(navController = navController, viewModel = viewModel)
+        }
     }
 }
