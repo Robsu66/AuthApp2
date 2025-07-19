@@ -8,8 +8,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import kotlinx.coroutines.launch
 
 class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
-    var loginResult: ((Boolean) -> Unit)? = null
-    var registerResult: ((Boolean) -> Unit)? = null
 
     fun login(email: String, password: String, onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
@@ -50,7 +48,11 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
         return repository.getGoogleSignInClient(context)
     }
 
-    fun logout() {
+   fun logout() {
         repository.logout()
+    }
+
+    fun isUserLogged(): Boolean {
+        return repository.isUserLogged()
     }
 }

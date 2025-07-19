@@ -61,7 +61,7 @@ fun ForgotPasswordScreen(navController: NavController, viewModel: AuthViewModel)
         Spacer(modifier = Modifier.height(16.dp))
         ClickableText(
             text = AnnotatedString("Voltar ao Login"),
-            onClick = { navController.popBackStack() } // Usando popBackStack() para voltar
+            onClick = { navController.popBackStack() }
         )
     }
 }
