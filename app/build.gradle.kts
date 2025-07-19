@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
-    id("org.jetbrains.compose")
+    alias(libs.plugins.kotlin.compose.compiler)
 }
 
 android {
@@ -17,8 +17,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
         vectorDrawables {
             useSupportLibrary = true
+        }
     }
 
     buildTypes {
@@ -37,19 +39,12 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
 }
-    }
 
 dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.16.0"))
