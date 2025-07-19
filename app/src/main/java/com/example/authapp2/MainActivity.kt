@@ -18,8 +18,8 @@ import com.example.authapp2.ui.view.ForgotPasswordScreen
 import com.example.authapp2.ui.view.HomeScreen
 import com.example.authapp2.ui.view.LoginScreen
 import com.example.authapp2.ui.view.RegisterScreen
-import com.example.authapp2.ui.viewmodel.AuthViewModel
-import com.example.authapp2.ui.viewmodel.AuthViewModelFactory
+import com.example.authapp2.viewmodel.AuthViewModel
+import com.example.authapp2.viewmodel.AuthViewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +30,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // Instancia o repositório e a factory do ViewModel
                     val authRepository = AuthRepository()
                     val viewModelFactory = AuthViewModelFactory(authRepository)
                     val authViewModel: AuthViewModel = viewModel(factory = viewModelFactory)
@@ -42,7 +41,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// Define as rotas de navegação
 object AppRoutes {
     const val LOGIN_SCREEN = "login"
     const val REGISTER_SCREEN = "register"
@@ -54,7 +52,6 @@ object AppRoutes {
 fun AppNavigator(viewModel: AuthViewModel) {
     val navController = rememberNavController()
 
-    // Verifica se o usuário já está logado para definir a tela inicial
     val startDestination = if (viewModel.isUserLogged()) {
         AppRoutes.HOME_SCREEN
     } else {

@@ -12,7 +12,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.authapp2.ui.viewmodel.AuthViewModel
+import com.example.authapp2.viewmodel.AuthViewModel
 
 @Composable
 fun RegisterScreen(navController: NavController, viewModel: AuthViewModel) {
@@ -67,7 +67,7 @@ fun RegisterScreen(navController: NavController, viewModel: AuthViewModel) {
                         isLoading = false
                         if (success) {
                             Toast.makeText(context, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show()
-                            navController.popBack() // Volta para a tela de login
+                            navController.popBackStack()
                         } else {
                             Toast.makeText(context, "Falha no cadastro. Verifique os dados.", Toast.LENGTH_SHORT).show()
                         }
@@ -81,7 +81,7 @@ fun RegisterScreen(navController: NavController, viewModel: AuthViewModel) {
         Spacer(modifier = Modifier.height(16.dp))
         ClickableText(
             text = AnnotatedString("Já tem uma conta? Faça login"),
-            onClick = { navController.popBack() }
+            onClick = { navController.popBackStack() }
         )
     }
 }

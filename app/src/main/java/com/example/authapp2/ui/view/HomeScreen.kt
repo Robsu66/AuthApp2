@@ -11,13 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.authapp2.AppRoutes
-import com.example.authapp2.ui.viewmodel.AuthViewModel
+import com.example.authapp2.viewmodel.AuthViewModel
 
 @Composable
 fun HomeScreen(navController: NavController, viewModel: AuthViewModel) {
     var userName by remember { mutableStateOf<String?>(null) }
 
-    // Efeito para buscar o nome do usuário uma única vez ao entrar na tela [cite: 120]
     LaunchedEffect(Unit) {
         viewModel.getUserName { name ->
             userName = name
@@ -32,20 +31,17 @@ fun HomeScreen(navController: NavController, viewModel: AuthViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (userName == null) {
-            // Mostra um indicador de carregamento enquanto o nome é buscado
             Text("Bem-vindo, Carregando...!", style = MaterialTheme.typography.headlineMedium)
             Spacer(modifier = Modifier.height(16.dp))
             CircularProgressIndicator()
         } else {
-            // Exibe o nome do usuário [cite: 120]
             Text("Bem-vindo, $userName!", style = MaterialTheme.typography.headlineMedium)
         }
 
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(onClick = {
-            viewModel.logout() // [cite: 118]
-            // Navega de volta para a tela de login, limpando o histórico de navegação
+            viewModel.logout()
             navController.navigate(AppRoutes.LOGIN_SCREEN) {
                 popUpTo(AppRoutes.HOME_SCREEN) { inclusive = true }
             }

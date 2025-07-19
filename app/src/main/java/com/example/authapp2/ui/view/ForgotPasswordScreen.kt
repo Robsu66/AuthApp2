@@ -47,7 +47,7 @@ fun ForgotPasswordScreen(navController: NavController, viewModel: AuthViewModel)
                         isLoading = false
                         if (success) {
                             Toast.makeText(context, "Email de recuperação enviado!", Toast.LENGTH_LONG).show()
-                            navController.popBack()
+                            navController.popBackStack() // Usando popBackStack() para voltar
                         } else {
                             Toast.makeText(context, "Falha ao enviar. Verifique o email.", Toast.LENGTH_SHORT).show()
                         }
@@ -61,7 +61,7 @@ fun ForgotPasswordScreen(navController: NavController, viewModel: AuthViewModel)
         Spacer(modifier = Modifier.height(16.dp))
         ClickableText(
             text = AnnotatedString("Voltar ao Login"),
-            onClick = { navController.popBack() }
+            onClick = { navController.popBackStack() } // Usando popBackStack() para voltar
         )
     }
 }
